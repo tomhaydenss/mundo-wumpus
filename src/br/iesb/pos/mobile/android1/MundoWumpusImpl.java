@@ -1,5 +1,7 @@
 package br.iesb.pos.mobile.android1;
 
+import java.util.List;
+
 public class MundoWumpusImpl implements MundoWumpus {
 
 	private Malha malha;
@@ -13,26 +15,54 @@ public class MundoWumpusImpl implements MundoWumpus {
 	}
 
 	@Override
-	public Resultado andar(Direcao direcao) {
+	public Resultado andarPara(Direcao direcaoInformada) {
+		List<Item> itensDaSala = malha.moverAgentePara(direcaoInformada);
+		boolean movimentoValido = (itensDaSala != null);
+		if (!movimentoValido) {
+			return new ResultadoImpl(movimentoValido);
+		} else {
+			boolean gameOver = itensDaSala.contains(Item.COVA)
+					|| itensDaSala.contains(Item.WUMPUS)
+					|| itensDaSala.contains(Item.OURO);
+			boolean venceu = itensDaSala.contains(Item.OURO);
+			return new ResultadoImpl(movimentoValido, itensDaSala, gameOver,
+					venceu);
+		}
+	}
+
+	@Override
+	public Resultado atirarPara(Direcao direcaoInformada) {
 		return null;
 	}
 
 	@Override
-	public Resultado atirar(Direcao direcao) {
-		return null;
+	public String exibirParcial() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(malha.exibirParcial());
+		sb.append(pontuacao());
+		return sb.toString();
 	}
-	
+
+	private String pontuacao() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n\nQuantidade Flecha: ").append(quantidadeFlecha)
+				.append("\n");
+		sb.append("Wumpus Derrotados: ").append(wumpusDerrotados).append("\n");
+		sb.append("Ouros Encontrados: ").append(ourosEncontrados).append("\n");
+		return sb.toString();
+	}
+
+	@Override
+	public String exibirTudo() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(malha.exibirTudo());
+		sb.append(pontuacao());
+		return sb.toString();
+	}
+
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(malha.toString());
-		sb.append("\n\n");
-		sb.append("Quantidade Flecha: ").append(quantidadeFlecha);
-		sb.append("\n");
-		sb.append("Wumpus Derrotados: ").append(wumpusDerrotados);
-		sb.append("\n");
-		sb.append("Ouros Encontrados: ").append(ourosEncontrados);
-		return sb.toString();
+		return exibirTudo();
 	}
 
 }

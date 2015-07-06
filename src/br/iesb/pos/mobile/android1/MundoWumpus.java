@@ -2,8 +2,12 @@ package br.iesb.pos.mobile.android1;
 
 public interface MundoWumpus {
 
-	Resultado andar(Direcao cima);
+	Resultado andarPara(Direcao direcaoInformada);
 
-	Resultado atirar(Direcao cima);
+	Resultado atirarPara(Direcao direcaoInformada);
+
+	String exibirParcial();
+
+	String exibirTudo();
 
 }

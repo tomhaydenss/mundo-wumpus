@@ -1,5 +1,6 @@
 package br.iesb.pos.mobile.android1;
 
+import java.util.List;
 import java.util.Random;
 
 public class Malha {
@@ -8,6 +9,7 @@ public class Malha {
 
 	private Sala[][] salas;
 	private Sala salaInicial;
+	private Sala salaDoAgente;
 
 	private int quantidadeSalasPorLado;
 
@@ -26,6 +28,7 @@ public class Malha {
 		inicializarSala();
 		inicializarVizinhos();
 		this.salaInicial = this.salas[quantidadeSalasPorLado - 1][0];
+		this.salaDoAgente = salaInicial;
 	}
 
 	private void inicializarSala() {
@@ -106,15 +109,60 @@ public class Malha {
 		return sala;
 	}
 
-	@Override
-	public String toString() {
+	public String exibirParcial() {
 		StringBuilder sb = new StringBuilder();
 		for (int y = 0; y < salas.length; y++) {
 			for (int x = 0; x < salas.length; x++) {
-				sb.append(salas[y][x].toString() + '\t');
+				sb.append(salas[y][x].exibirParcial() + '\t');
 			}
 			sb.append('\n');
 		}
 		return sb.toString();
 	}
+
+	public String exibirTudo() {
+		StringBuilder sb = new StringBuilder();
+		for (int y = 0; y < salas.length; y++) {
+			for (int x = 0; x < salas.length; x++) {
+				sb.append(salas[y][x].exibirTudo() + '\t');
+			}
+			sb.append('\n');
+		}
+		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return exibirTudo();
+	}
+
+	public List<Item> moverAgentePara(Direcao direcao) {
+		Sala proximaSala = null;
+		switch (direcao) {
+		case CIMA:
+			proximaSala = salaDoAgente.getVizinhoDeCima();
+			break;
+		case ESQUERDA:
+			proximaSala = salaDoAgente.getVizinhoDaEsquerda();
+			break;
+		case BAIXO:
+			proximaSala = salaDoAgente.getVizinhoDeBaixo();
+			break;
+		case DIREITA:
+			proximaSala = salaDoAgente.getVizinhoDaDireita();
+			break;
+		default:
+			proximaSala = null;
+			break;
+		}
+		if (proximaSala != null) {
+			salaDoAgente.removerItem(Item.AGENTE);
+			proximaSala.adicionarItem(Item.AGENTE);
+			proximaSala.setExplorado(true);
+			salaDoAgente = proximaSala;
+			return proximaSala.getItems();
+		}
+		return null;
+	}
+
 }

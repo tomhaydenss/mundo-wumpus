@@ -1,6 +1,9 @@
 package br.iesb.pos.mobile.android1;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class Sala {
@@ -10,6 +13,7 @@ public class Sala {
 	private Sala vizinhoDeBaixo;
 	private Sala vizinhoDaEsquerda;
 	private Sala vizinhoDaDireita;
+	private boolean explorado;
 
 	public Sala getVizinhoDeCima() {
 		return vizinhoDeCima;
@@ -61,6 +65,17 @@ public class Sala {
 			}
 		}
 	}
+	
+	public void removerItem(Item item) {
+		items.remove(item);	
+	}
+	
+	public List<Item> getItems() {
+		Set<Item> unmodifiableSet = Collections.unmodifiableSet(items);
+		List<Item> list = new LinkedList<Item>();
+		list.addAll(unmodifiableSet);
+		return list;
+	}
 
 	public boolean temOuro() {
 		return temItem(Item.OURO);
@@ -84,6 +99,10 @@ public class Sala {
 		return resultado;
 	}
 
+	public boolean isExplorado() {
+		return explorado;
+	}
+
 	public boolean temAlgumDestesItens(Item[] restricoes) {
 		boolean resultado = false;
 		for (int i = 0; i < restricoes.length; i++) {
@@ -95,13 +114,32 @@ public class Sala {
 		return resultado;
 	}
 
-	@Override
-	public String toString() {
+	public void setExplorado(boolean explorado) {
+		this.explorado = explorado;
+	}
+
+	public String exibirParcial() {
 		StringBuilder sb = new StringBuilder();
 		for (Item item : items) {
-			sb.append(item.codigo);
+			if ((this.explorado && item.isExibicaoParcial())
+					|| (item.isSempreVisivel())) {
+				sb.append(item.getCodigo());
+			}
 		}
 		return sb.toString();
+	}
+
+	public String exibirTudo() {
+		StringBuilder sb = new StringBuilder();
+		for (Item item : items) {
+			sb.append(item.getCodigo());
+		}
+		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return exibirTudo();
 	}
 
 }

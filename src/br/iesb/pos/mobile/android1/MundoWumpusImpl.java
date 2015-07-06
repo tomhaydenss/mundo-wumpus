@@ -39,7 +39,7 @@ public class MundoWumpusImpl implements MundoWumpus {
 	public String exibirParcial() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(malha.exibirParcial());
-		sb.append(pontuacao());
+//		sb.append(pontuacao());
 		return sb.toString();
 	}
 
@@ -56,7 +56,7 @@ public class MundoWumpusImpl implements MundoWumpus {
 	public String exibirTudo() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(malha.exibirTudo());
-		sb.append(pontuacao());
+//		sb.append(pontuacao());
 		return sb.toString();
 	}
 

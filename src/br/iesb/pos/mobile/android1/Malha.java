@@ -8,7 +8,6 @@ public class Malha {
     private Random random = new Random();
 
     private Sala[][] salas;
-    private Sala salaInicial;
     private Sala salaDoAgente;
 
     private int quantidadeSalasPorLado;
@@ -26,8 +25,7 @@ public class Malha {
         this.salas = new Sala[quantidadeSalasPorLado][quantidadeSalasPorLado];
         inicializarSala();
         inicializarVizinhos();
-        this.salaInicial = this.salas[quantidadeSalasPorLado - 1][0];
-        this.salaDoAgente = salaInicial;
+        this.salaDoAgente = this.salas[quantidadeSalasPorLado - 1][0];
     }
 
     private void inicializarSala() {
@@ -66,7 +64,7 @@ public class Malha {
     }
 
     private void inicializarAgente() {
-        this.salaInicial.adicionarItem(Item.AGENTE);
+        this.salaDoAgente.adicionarItem(Item.AGENTE);
     }
 
     private void inicializarOuro(int quantidadeOuro) {
@@ -96,7 +94,7 @@ public class Malha {
         int x = random.nextInt(quantidadeSalasPorLado);
         int y = random.nextInt(quantidadeSalasPorLado);
         sala = this.salas[y][x];
-        if (!sala.equals(salaInicial) && !sala.equals(salaInicial.getVizinhoDeCima()) && !sala.equals(salaInicial.getVizinhoDaDireita())
+        if (!sala.equals(salaDoAgente) && !sala.equals(salaDoAgente.getVizinhoDeCima()) && !sala.equals(salaDoAgente.getVizinhoDaDireita())
                 && !sala.temAlgumDestesItens(restricoes)) {
             sala.adicionarItem(item);
         }
